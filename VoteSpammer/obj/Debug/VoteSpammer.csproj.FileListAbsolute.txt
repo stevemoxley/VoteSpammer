@@ -1,0 +1,10 @@
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\VoteSpammer.exe.config
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\VoteSpammer.exe
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\VoteSpammer.pdb
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\HtmlAgilityPack.dll
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\HtmlAgilityPack.pdb
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\bin\Debug\HtmlAgilityPack.xml
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\obj\Debug\VoteSpammer.csprojResolveAssemblyReference.cache
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\obj\Debug\VoteSpammer.csproj.CoreCompileInputs.cache
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\obj\Debug\VoteSpammer.exe
+c:\users\steve\documents\visual studio 2017\Projects\VoteSpammer\VoteSpammer\obj\Debug\VoteSpammer.pdb
