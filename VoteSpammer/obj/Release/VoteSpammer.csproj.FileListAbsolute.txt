@@ -1,0 +1,16 @@
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\badProxies.txt
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\proxyList.txt
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\VoteSpammer.exe.config
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\VoteSpammer.exe
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\VoteSpammer.pdb
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\HtmlAgilityPack.dll
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\Newtonsoft.Json.dll
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\HtmlAgilityPack.pdb
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\HtmlAgilityPack.xml
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\Newtonsoft.Json.pdb
+E:\Github\VoteSpammer\VoteSpammer\bin\Release\Newtonsoft.Json.xml
+E:\Github\VoteSpammer\VoteSpammer\obj\Release\VoteSpammer.csprojAssemblyReference.cache
+E:\Github\VoteSpammer\VoteSpammer\obj\Release\VoteSpammer.csproj.CoreCompileInputs.cache
+E:\Github\VoteSpammer\VoteSpammer\obj\Release\VoteSpammer.csproj.CopyComplete
+E:\Github\VoteSpammer\VoteSpammer\obj\Release\VoteSpammer.exe
+E:\Github\VoteSpammer\VoteSpammer\obj\Release\VoteSpammer.pdb
