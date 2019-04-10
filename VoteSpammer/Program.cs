@@ -34,21 +34,34 @@ namespace VoteSpammer
 
         static async void StartVoting(int numberOfVotes)
         {
-            var allProxies = ProxyProvider.AllWorkingProxies;
+            var allProxies = ProxyProvider.AllWorkingProxies.Randomize();
 
             foreach (var webProxy in allProxies)
             {
                 Console.WriteLine($"Trying vote on proxy { webProxy.Address }");
-                var result = await Vote(webProxy);
-                if(result)
+                List<Task<bool>> task = new List<Task<bool>>();
+                task.Add(Vote(webProxy));
+
+                var id = Task.WaitAny(task.ToArray(), 60000);
+
+                try
                 {
-                    Console.WriteLine($"Proxy worked. Beginning vote spam");
-                    VoteUsingWorkingProxy(numberOfVotes, webProxy);
+                    var result = task.ElementAt(id).Result;
+
+                    if (result)
+                    {
+                        Console.WriteLine($"Proxy worked. Beginning vote spam");
+                        VoteUsingWorkingProxy(numberOfVotes, webProxy);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Adding { webProxy.Address } to bad proxy list");
+                        ProxyProvider.AddBadProxy(webProxy);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine($"Adding { webProxy.Address } to bad proxy list");
-                    ProxyProvider.AddBadProxy(webProxy);
+                    Console.WriteLine($"Test Exception: { ex.Message }");
                 }
             }
 
@@ -72,34 +85,42 @@ namespace VoteSpammer
 
         private static async Task<WebInfo> GetWebInfo(WebProxy proxy)
         {
-            var url = "https://www.10best.com/awards/travel/best-zoo-2019/saint-louis-zoo-st-louis/";
-
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.CookieContainer = new CookieContainer();
-            request.Proxy = proxy;
-            request.Timeout = _timeout;
-            request.ReadWriteTimeout = _timeout;
-
-            using (var response = await request.GetResponseAsync())
-            using (var reader = new StreamReader(response.GetResponseStream()))
+            try
             {
-                var httpResponse = (HttpWebResponse)response;
-                var document = new HtmlDocument();
-                document.LoadHtml(reader.ReadToEnd());
+                var url = "https://www.10best.com/awards/travel/best-zoo-2019/saint-louis-zoo-st-louis/";
 
-                var voteKey = document.GetElementbyId("votekey").Attributes["value"].Value;
-                var voteKeyEncoded = WebUtility.UrlEncode(voteKey);
-                var cookieValue = httpResponse.Cookies[1].Value;
-                var uniqueId = httpResponse.Cookies[0].Value;
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.CookieContainer = new CookieContainer();
+                request.Proxy = proxy;
+                request.Timeout = _timeout;
+                request.ReadWriteTimeout = _timeout;
 
-                var webInfo = new WebInfo()
+                using (var response = await request.GetResponseAsync())
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
-                    CookieNumber = cookieValue,
-                    VoteKey = voteKeyEncoded,
-                    UniqueID = uniqueId
-                };
+                    var httpResponse = (HttpWebResponse)response;
+                    var document = new HtmlDocument();
+                    document.LoadHtml(reader.ReadToEnd());
 
-                return webInfo;
+                    var voteKey = document.GetElementbyId("votekey").Attributes["value"].Value;
+                    var voteKeyEncoded = WebUtility.UrlEncode(voteKey);
+                    var cookieValue = httpResponse.Cookies[1].Value;
+                    var uniqueId = httpResponse.Cookies[0].Value;
+
+                    var webInfo = new WebInfo()
+                    {
+                        CookieNumber = cookieValue,
+                        VoteKey = voteKeyEncoded,
+                        UniqueID = uniqueId
+                    };
+
+                    return webInfo;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"WebInfo Exception: { ex.Message }");
+                return null;
             }
         }
 
@@ -108,6 +129,9 @@ namespace VoteSpammer
             try
             {
                 var webInfo = await GetWebInfo(proxy);
+
+                if (webInfo == null)
+                    return false;
 
                 var url = $"http://www.10best.com/common/ajax/vote.php?voteKey={ webInfo.VoteKey }&c={webInfo.CookieNumber }";
 
