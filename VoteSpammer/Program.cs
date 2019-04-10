@@ -15,7 +15,7 @@ namespace VoteSpammer
         static void Main(string[] args)
         {
 
-            System.Net.ServicePointManager.DefaultConnectionLimit = 20;
+            System.Net.ServicePointManager.DefaultConnectionLimit = 200;
 
             Console.WriteLine("10Best Vote Spammer");
             Console.WriteLine("---------------------");
@@ -45,6 +45,11 @@ namespace VoteSpammer
                     Console.WriteLine($"Proxy worked. Beginning vote spam");
                     VoteUsingWorkingProxy(numberOfVotes, webProxy);
                 }
+                else
+                {
+                    Console.WriteLine($"Adding { webProxy.Address } to bad proxy list");
+                    ProxyProvider.AddBadProxy(webProxy);
+                }
             }
 
             ProxyProvider.SaveBadProxies();
@@ -59,7 +64,7 @@ namespace VoteSpammer
                 allTasks.Add(Vote(webProxy));
             }
 
-            Task.WaitAll(allTasks.ToArray());
+            Task.WaitAll(allTasks.ToArray(), 60000);
 
             Console.WriteLine($"Finished voting with proxy { webProxy.Address }");
         }
@@ -136,7 +141,6 @@ namespace VoteSpammer
                     var result = reader.ReadToEnd();
                     if (result.Contains("Voting is not permitted in your location"))
                     {
-                        ProxyProvider.AddBadProxy(proxy);
                         return false;
                     }
                     Console.WriteLine(result);
@@ -146,13 +150,11 @@ namespace VoteSpammer
             catch (WebException webEx)
             {
                 Console.WriteLine($"WebException: {webEx.Message}.");
-                ProxyProvider.AddBadProxy(proxy);
                 return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                ProxyProvider.AddBadProxy(proxy);
                 return false;
             }
 
